@@ -1,0 +1,34 @@
+
+/* ====================================
+                GENERAL STYLE
+==================================== */
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: LeagueSpartan,sans-serif;
+}
+@font-face {
+  font-family: LeagueSpartan;
+  src: url(./assets/LeagueSpartan-Bold.ttf) format("truetype");
+}
+
+
+/* ====================================
+                HEADER
+==================================== */
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header__nav{
+  display: flex;
+  align-items: flex-end;
+}
+.header__title{
+  font-size: 1rem;
+}
+.header__sub{
+  font-size: .5rem;
+}

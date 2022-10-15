@@ -1,6 +1,10 @@
-
+import { useContext } from "react";
+import { DataContext } from "../DataProvider";
 
 const Header = () => {
+  const { toggleTheme, textColor } = useContext(DataContext)
+  const color = [1,2,3];
+
   return (
     <header className='header'>
       <h1 className='header__title'>calc</h1>
@@ -10,15 +14,33 @@ const Header = () => {
 
         <aside className="header__nav__container">
           <p className="header__nav__number">
-            <span>1</span>
-            <span>2</span>
-            <span>3</span>
+            {
+              color.map((e)=> { return <span>{e}</span> })
+            }
           </p>
           
           <fieldset className="header__radio">
-            <input type="radio" name="radio" value="radio1" id="radio-box1" defaultChecked />
-            <input type="radio" name="radio" value="radio2" id="radio-box2" />
-            <input type="radio" name="radio" value="radio3" id="radio-box3" />
+            {
+              color.map((e)=> {
+                return e === 1 ? 
+                <input 
+                type="radio" 
+                name="radio" 
+                value={"radio"+e} 
+                id={"radio-box"+e} 
+                onClick={()=>{ toggleTheme(e)}}
+                defaultChecked 
+                /> 
+                : 
+                <input 
+                type="radio" 
+                name="radio" 
+                value={"radio"+e} 
+                id={"radio-box"+e} 
+                onClick={()=>{ toggleTheme(e)}} 
+                />
+              })
+            }
           </fieldset>
         </aside>
         
