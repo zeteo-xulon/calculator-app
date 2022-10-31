@@ -12,7 +12,13 @@
   font-family: LeagueSpartan;
   src: url(./assets/LeagueSpartan-Bold.ttf) format("truetype");
 }
-
+.App {
+  padding: 1rem;
+  height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
 
 /* ====================================
                 HEADER
@@ -31,4 +37,55 @@
 }
 .header__sub{
   font-size: .5rem;
+}
+
+
+/* ====================================
+                MAIN
+==================================== */
+.main {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+  padding: 1rem 0rem;
+  height: 100%;
+}
+
+/*===== SCREEN =====*/
+.main__screen{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 10vh;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+/*===== PAD =====*/
+.btn__0{ grid-area: zero ; } .btn__1{ grid-area: one  ; } .btn__2{ grid-area: two ; } .btn__3{ grid-area: three ; }
+.btn__4{ grid-area: four ; } .btn__5{ grid-area: five ; } .btn__6{ grid-area: six ; } .btn__7{ grid-area: seven ; }
+.btn__8{ grid-area: eight ; } .btn__9{ grid-area: nine ; } .btn__plus{ grid-area: plus ; } .btn__-{ grid-area: minus ; }
+.btn__x{ grid-area: x ; } .btn__slash{ grid-area: slash ; } .btn__dot{ grid-area: dot ; } .btn__del{ grid-area: del ; }
+.btn__equal{ grid-area: equal ; } .btn__reset{ grid-area: reset ; }
+
+.pad{
+  display: grid;
+  grid-template: repeat(5, 1fr) / repeat(4, 1fr);
+  grid-template-areas: 
+  "seven eight nine del"
+  "four five six plus"
+  "one two three minus"
+  "dot zero slash x"
+  "reset reset equal equal";
+  gap: 5px;
+  height: 100%;
+}
+
+
+/* ====================================
+                FOOTER
+==================================== */
+.footer{
+  text-align: center;
 }
