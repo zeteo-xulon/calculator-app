@@ -24,10 +24,10 @@
   align-items: center;
 }
 .app {
-  padding: 7vw 20px;
+  padding: 5vw 20px;
   max-width: 560px;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -45,13 +45,43 @@
   display: flex;
   align-items: flex-end;
 }
+.header__nav__container {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 0.2em;
+}
+.header__nav__number {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: .7em;
+}
 .header__title{
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 .header__sub{
-  font-size: .5rem;
+  font-size: 0.6rem;
+  margin-right: 2em;
+  height: 20px;
+  display: flex;
+  align-items: center;
 }
-
+.header__radio{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 25px;
+  height: 25px;
+  width: 70px;
+  z-index: 6;
+}
+.header__radio__circle{
+  border-radius: 20px;
+  height: 15px;
+  width: 15px;
+  z-index: 7;
+}
 
 /* ====================================
                 MAIN
@@ -78,7 +108,7 @@
   border-radius: 10px;
 }
 .screen__text{
-  font-size: 3rem;
+  font-size: clamp(2rem, 8vw, 3rem);
 }
 
 /*===== PAD =====*/
@@ -107,7 +137,7 @@ button{
   height: 60px;
   border: 0px solid black;
   border-radius: 5px;
-  font-size: 2rem;
+  font-size: clamp(1.5em, 5.5vw, 2em);
   padding: 0.4em 0px;
 }
 button:hover{
@@ -119,5 +149,10 @@ button:hover{
                 FOOTER
 ==================================== */
 .footer{
+  margin-top: 1rem;
   text-align: center;
+  font-size: clamp(12px, 3.5vw, 1em);
+}
+.footer__link{
+  text-decoration: none;
 }

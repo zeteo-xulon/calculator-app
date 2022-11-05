@@ -21,31 +21,31 @@ const Header = () => {
             }
           </p>
           
-          <fieldset className="header__radio">
+          <div 
+          className="header__radio" 
+          style={{ backgroundColor: colorPanel[colorTheme].backgrounds.toggleBg }}>
             {
               color.map((e)=> {
-                return e === 1 ? 
-                <input 
-                key={"radio" + e}
-                type="radio" 
-                name="radio" 
-                value={"radio"+e} 
+                return e === colorTheme ? 
+                <span 
+                key={"radio-" + e}
+                value={e} 
+                className="header__radio__circle"
                 id={"radio-box"+e} 
+                style={{ backgroundColor: colorPanel[colorTheme].switcher.radioButton }}
                 onClick={()=>{ setColorTheme(e)}}
-                defaultChecked 
                 /> 
                 : 
-                <input 
-                key={"radio" + e}
-                type="radio" 
-                name="radio" 
-                value={"radio"+e} 
+                <span 
+                key={"radio-" + e}
+                value={e} 
+                className="header__radio__circle"
                 id={"radio-box"+e} 
                 onClick={()=>{ setColorTheme(e)}} 
                 />
               })
             }
-          </fieldset>
+          </div>
         </aside>
         
       </nav>
