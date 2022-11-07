@@ -85,9 +85,10 @@ export const colorPanel = {
 
 const DataProvider = ({ children }) => {
   const [colorTheme, setColorTheme] = useState(1);
+  const [screenText, setScreenText] = useState("0");
 
   return (
-    <DataContext.Provider value={{ colorTheme, setColorTheme, colorPanel }}>
+    <DataContext.Provider value={{ colorTheme, setColorTheme, colorPanel, screenText, setScreenText }}>
       {children}
     </DataContext.Provider>
   );

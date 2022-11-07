@@ -1,8 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContext } from "../DataProvider";
 
 const Pad = () => {
-  const { colorTheme, colorPanel } = useContext(DataContext);
+  const { colorTheme, colorPanel, screenText, setScreenText } = useContext(DataContext);
+  const [stockCalculation, setStockCalculation] = useState(0)
 
   let btnList= [
     {key: 1, name:'7', class:"7"}, {key: 2, name:'8', class:"8"}, {key: 3, name:'9', class:"9"}, {key: 4, name:'DEL', class:"del"},
@@ -26,17 +27,51 @@ const Pad = () => {
       boxShadow: `${colorPanel[colorTheme].keys.equalKeyShadow} 0px 5px 0px`,
       color: colorPanel[colorTheme].text.equalPad,
     }
+    
+
+    const pushKey = (e) => { 
+      const ThereIsASpecialKey = ['-', "+", "=", "DEL", "RESET", "/","."].find(key=> key === e);
+      if(ThereIsASpecialKey){ return resolveSpecialKey(e) }
+      return screenText === "0" ? setScreenText(e) : setScreenText(screenText + e)
+     }
+
+    const resolveSpecialKey = (e) => {
+      let parsedScreenText = Number(String(screenText).split('').map((x)=> x === "," ? x = "." : x = x).join(''))
+      if(e === "RESET"){ setStockCalculation(0); return setScreenText("0") }
+      if(e === "DEL"){ return screenText.length === 1 ? setScreenText("0") : setScreenText(String(screenText).split('').slice(0,-1).join('')) }
+      if(e === ".") {
+        let isThereAComa = screenText.split('').find(key => key === ".");
+        return isThereAComa ? setScreenText(screenText) : setScreenText(screenText + e);
+      }
+
+      
+
+
+
+      if(e === "+"){
+        setStockCalculation(stockCalculation + parsedScreenText);
+        console.log(stockCalculation)
+        return setScreenText("0");
+      }
+      if(e === "="){
+        return setScreenText(stockCalculation);
+      }
+    }
+     
 
   return (
     <section className="pad" style={{ backgroundColor: colorPanel[colorTheme].backgrounds.keyPadBg }} >
       {
-        btnList.map((btn)=> { return <button 
+        btnList.map((btn)=> { 
+          return <button 
           key={btn.name + btn.key} 
           className={ 'btn__' + btn.class } 
           style={ btn.key === 4 || btn.key === 17 || btn.key === 18 ? ( btn.key === 18 ? equalkeyStyle : specialKeyStyle ) : normalKeyStyle }
+          onClick={(keyPressed)=> { pushKey(keyPressed.target.textContent) }}
           >
             { btn.name }
-          </button> })
+          </button> 
+          })
       }
     </section>
   );
