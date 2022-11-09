@@ -3,7 +3,7 @@ import { DataContext } from "../DataProvider";
 
 const Pad = () => {
   const { colorTheme, colorPanel, screenText, setScreenText } = useContext(DataContext);
-  const [stockCalculation, setStockCalculation] = useState(0)
+  const [stockCalculation, setStockCalculation] = useState([]);
 
   let btnList= [
     {key: 1, name:'7', class:"7"}, {key: 2, name:'8', class:"8"}, {key: 3, name:'9', class:"9"}, {key: 4, name:'DEL', class:"del"},
@@ -27,34 +27,61 @@ const Pad = () => {
       boxShadow: `${colorPanel[colorTheme].keys.equalKeyShadow} 0px 5px 0px`,
       color: colorPanel[colorTheme].text.equalPad,
     }
+
+     /** SCNEARIO DE CALCUL
+      * Créer un tableau, dans le tableau push la premiere valeur {Number}
+      * ensuite push le signe mathématique à évaluer {String}
+      * puis push la seconde valeur {Number}
+      * Créer une seconde fonction pour retourner la valeur finale {Number}
+      * En premier il faudra find si le caractère spécial en array[1] est un +, un -, un /, un * ou un =
+      * pour chaque situation il faudra faire le calcul array[0] ({Number}), puis le signe trouvé en true, et array[2]
+      * Retourner cette valeur en {Number} et la stocker dans une variable
+      * @param {Number} firstNumber le premier nombre
+      * @param {String} specialKey qui sera un caractère spécial
+      * @param {Number} secondNumber qui sera le second nombre 
+      * @returns une valeur finale en Number
+    */
     
+     function calculate(firstNumber, specialKey, secondNumber){
+      if(specialKey === "+"){ return firstNumber + secondNumber }
+      if(specialKey === "-"){ return firstNumber - secondNumber }
+      if(specialKey === "/"){ return firstNumber / secondNumber }
+      if(specialKey === "x"){ return firstNumber * secondNumber }
+    }
+
+    function checkfloat(num){
+      let isItAFloatNumber = num.match(/^[+-]?\d+(\.\d+)?$/);
+      return isItAFloatNumber ? parseFloat(num) : num ;
+    }
+
+    function parseFloat(num){
+      return String(num).split('.')[1].length > 5 ? num.toFixed(5) : num ;
+    }
 
     const pushKey = (e) => { 
-      const ThereIsASpecialKey = ['-', "+", "=", "DEL", "RESET", "/","."].find(key=> key === e);
+      const ThereIsASpecialKey = ['-', "+", "=", "DEL", "RESET", "/",".","x"].find(key=> key === e);
       if(ThereIsASpecialKey){ return resolveSpecialKey(e) }
       return screenText === "0" ? setScreenText(e) : setScreenText(screenText + e)
      }
 
     const resolveSpecialKey = (e) => {
-      let parsedScreenText = Number(String(screenText).split('').map((x)=> x === "," ? x = "." : x = x).join(''))
-      if(e === "RESET"){ setStockCalculation(0); return setScreenText("0") }
+      let parsedScreenText = Number(String(screenText).split('').map((z)=> z === "," ? z = "." : z ).join(''))
+      if(e === "RESET"){ setStockCalculation([]); return setScreenText("0") }
       if(e === "DEL"){ return screenText.length === 1 ? setScreenText("0") : setScreenText(String(screenText).split('').slice(0,-1).join('')) }
       if(e === ".") {
-        let isThereAComa = screenText.split('').find(key => key === ".");
+        let isThereAComa =  screenText.split('').find(key => key === ".");
         return isThereAComa ? setScreenText(screenText) : setScreenText(screenText + e);
       }
-
-      
-
-
-
-      if(e === "+"){
-        setStockCalculation(stockCalculation + parsedScreenText);
-        console.log(stockCalculation)
-        return setScreenText("0");
+      if(stockCalculation.length <= 1){
+        if(e === "+"){ setStockCalculation([parsedScreenText, "+"]); return setScreenText("0") }
+        if(e === "-"){ setStockCalculation([parsedScreenText, "-"]); return setScreenText("0") }
+        if(e === "/"){ setStockCalculation([parsedScreenText, "/"]); return setScreenText("0") }
+        if(e === "x"){ setStockCalculation([parsedScreenText, "x"]); return setScreenText("0") }
       }
-      if(e === "="){
-        return setScreenText(stockCalculation);
+      if(stockCalculation.length > 1){
+        let resolved = calculate(stockCalculation[0], stockCalculation[1], parsedScreenText);
+        setStockCalculation([resolved]);
+        return e === "=" ? setScreenText(String(resolved)) : setScreenText('0');
       }
     }
      
