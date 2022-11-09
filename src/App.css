@@ -109,7 +109,13 @@
   overflow: hidden;
 }
 .screen__text{
-  font-size: clamp(2rem, 8vw, 3rem);
+  /* font-size: clamp(1rem, 8vw, 3rem); */
+  font-size: calc(1rem + 3vw);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  text-align: right;
 }
 
 /*===== PAD =====*/

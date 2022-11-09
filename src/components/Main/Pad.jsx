@@ -50,13 +50,12 @@ const Pad = () => {
     }
 
     function checkfloat(num){
-      let isItAFloatNumber = num.match(/^[+-]?\d+(\.\d+)?$/);
+      let regex = new RegExp(/["."]/g)
+      let isItAFloatNumber = regex.test(String(num));
       return isItAFloatNumber ? parseFloat(num) : num ;
     }
 
-    function parseFloat(num){
-      return String(num).split('.')[1].length > 5 ? num.toFixed(5) : num ;
-    }
+    const parseFloat = num => String(num).split('.')[1].length > 5 ? num.toFixed(5) : num ;
 
     const pushKey = (e) => { 
       const ThereIsASpecialKey = ['-', "+", "=", "DEL", "RESET", "/",".","x"].find(key=> key === e);
@@ -73,18 +72,22 @@ const Pad = () => {
         return isThereAComa ? setScreenText(screenText) : setScreenText(screenText + e);
       }
       if(stockCalculation.length <= 1){
-        if(e === "+"){ setStockCalculation([parsedScreenText, "+"]); return setScreenText("0") }
-        if(e === "-"){ setStockCalculation([parsedScreenText, "-"]); return setScreenText("0") }
-        if(e === "/"){ setStockCalculation([parsedScreenText, "/"]); return setScreenText("0") }
-        if(e === "x"){ setStockCalculation([parsedScreenText, "x"]); return setScreenText("0") }
+        return stockIt(e, parsedScreenText)
       }
       if(stockCalculation.length > 1){
         let resolved = calculate(stockCalculation[0], stockCalculation[1], parsedScreenText);
-        setStockCalculation([resolved]);
-        return e === "=" ? setScreenText(String(resolved)) : setScreenText('0');
+        let resolveFloatChecked = checkfloat(resolved)
+        setStockCalculation([resolveFloatChecked]);
+        return e === "=" ? setScreenText(String(resolveFloatChecked)) : setScreenText('0');
       }
     }
      
+    function stockIt(e, parsedScreenText){
+      if(e === "+"){ setStockCalculation([parsedScreenText, "+"]); return setScreenText("0") }
+      if(e === "-"){ setStockCalculation([parsedScreenText, "-"]); return setScreenText("0") }
+      if(e === "/"){ setStockCalculation([parsedScreenText, "/"]); return setScreenText("0") }
+      if(e === "x"){ setStockCalculation([parsedScreenText, "x"]); return setScreenText("0") }
+    }
 
   return (
     <section className="pad" style={{ backgroundColor: colorPanel[colorTheme].backgrounds.keyPadBg }} >
