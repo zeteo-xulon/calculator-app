@@ -1,12 +1,15 @@
 import { useContext } from "react";
 import { DataContext } from "../DataProvider";
 
+/** SCENARIO
+ *  Each time the user select an option for color theme, 
+ *  it will change the color theme for all the app.
+ * @returns to DataContext in the Dataprovider a number for the color theme
+ */
 const Header = () => {
   const { setColorTheme, colorTheme, colorPanel } = useContext(DataContext)
   const color = [1,2,3];
-
-
-
+  
   return (
     <header className='header' style={{ color: colorPanel[colorTheme].text.header }} >
       <h1 className='header__title'>calc</h1>

@@ -8,7 +8,11 @@ const Screen = () => {
   const screenBg = { backgroundColor: colorPanel[colorTheme].backgrounds.screenBg };
   const screenTextColor = { color: colorPanel[colorTheme].text.screen };
 
-
+  /**
+   * Will verify the value received, resolve if something wrong to display on screen String
+   * @param {Number} text - a value, it should be a Number
+   * @returns a String with "0" if something was wrong, or a parsed String with "." replaced by ","
+   */
   function textToString(text){
     if(text === undefined || text === null || text === "") { return "0" };
     let textWithComa = String(text).split('').map(e => e === "." ? e = "," : e ).join('');
