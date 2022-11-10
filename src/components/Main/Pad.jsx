@@ -26,36 +26,14 @@ const Pad = () => {
       backgroundColor: colorPanel[colorTheme].keys.equalKeyBg,
       boxShadow: `${colorPanel[colorTheme].keys.equalKeyShadow} 0px 5px 0px`,
       color: colorPanel[colorTheme].text.equalPad,
-    }
-
-     /** SCNEARIO DE CALCUL
-      * Créer un tableau, dans le tableau push la premiere valeur {Number}
-      * ensuite push le signe mathématique à évaluer {String}
-      * puis push la seconde valeur {Number}
-      * Créer une seconde fonction pour retourner la valeur finale {Number}
-      * En premier il faudra find si le caractère spécial en array[1] est un +, un -, un /, un * ou un =
-      * pour chaque situation il faudra faire le calcul array[0] ({Number}), puis le signe trouvé en true, et array[2]
-      * Retourner cette valeur en {Number} et la stocker dans une variable
-      * @param {Number} firstNumber le premier nombre
-      * @param {String} specialKey qui sera un caractère spécial
-      * @param {Number} secondNumber qui sera le second nombre 
-      * @returns une valeur finale en Number
-    */
-    
-     function calculate(firstNumber, specialKey, secondNumber){
-      if(specialKey === "+"){ return firstNumber + secondNumber }
-      if(specialKey === "-"){ return firstNumber - secondNumber }
-      if(specialKey === "/"){ return firstNumber / secondNumber }
-      if(specialKey === "x"){ return firstNumber * secondNumber }
-    }
+    }  
 
     function checkfloat(num){
       let regex = new RegExp(/["."]/g)
       let isItAFloatNumber = regex.test(String(num));
       return isItAFloatNumber ? parseFloat(num) : num ;
     }
-
-    const parseFloat = num => String(num).split('.')[1].length > 5 ? num.toFixed(5) : num ;
+    const parseFloat = num => String(num).split('.')[1].length > 5 ? Number(num).toFixed(5) : Number(num) ;
 
     const pushKey = (e) => { 
       const ThereIsASpecialKey = ['-', "+", "=", "DEL", "RESET", "/",".","x"].find(key=> key === e);
@@ -71,22 +49,56 @@ const Pad = () => {
         let isThereAComa =  screenText.split('').find(key => key === ".");
         return isThereAComa ? setScreenText(screenText) : setScreenText(screenText + e);
       }
-      if(stockCalculation.length <= 1){
-        return stockIt(e, parsedScreenText)
-      }
-      if(stockCalculation.length > 1){
+
+      if(stockCalculation.length === 0){ return stockIt(parsedScreenText, e) }
+      if(stockCalculation.length === 1){ return stockIt(stockCalculation[0], e) }
+      if(stockCalculation.length > 1){      
         let resolved = calculate(stockCalculation[0], stockCalculation[1], parsedScreenText);
-        let resolveFloatChecked = checkfloat(resolved)
-        setStockCalculation([resolveFloatChecked]);
+        let resolveFloatChecked = checkfloat(resolved);
+        setStockCalculation(['+','-','/','x'].find((k)=> e === k) ? [resolveFloatChecked, e] : [resolveFloatChecked]);
         return e === "=" ? setScreenText(String(resolveFloatChecked)) : setScreenText('0');
       }
     }
      
-    function stockIt(e, parsedScreenText){
-      if(e === "+"){ setStockCalculation([parsedScreenText, "+"]); return setScreenText("0") }
-      if(e === "-"){ setStockCalculation([parsedScreenText, "-"]); return setScreenText("0") }
-      if(e === "/"){ setStockCalculation([parsedScreenText, "/"]); return setScreenText("0") }
-      if(e === "x"){ setStockCalculation([parsedScreenText, "x"]); return setScreenText("0") }
+    // function stockIt(parsedScreenText, e){
+    //   if(e === "+"){ setStockCalculation([parsedScreenText, "+"]); return setScreenText("0") }
+    //   if(e === "-"){ setStockCalculation([parsedScreenText, "-"]); return setScreenText("0") }
+    //   if(e === "/"){ setStockCalculation([parsedScreenText, "/"]); return setScreenText("0") }
+    //   if(e === "x"){ setStockCalculation([parsedScreenText, "x"]); return setScreenText("0") }
+    //   if(e === "="){ return setScreenText(stockCalculation[0]) }
+    // }
+    function stockIt(parsedScreenText, e){
+      switch (e){
+        case "+":
+          setStockCalculation([parsedScreenText, "+"]); 
+          setScreenText("0");
+          break;
+        case "-":
+          setStockCalculation([parsedScreenText, "-"]); 
+          setScreenText("0");
+          break;
+        case "/":
+          setStockCalculation([parsedScreenText, "/"]); 
+          setScreenText("0");
+          break;
+        case "x":
+          setStockCalculation([parsedScreenText, "x"]); 
+          setScreenText("0");
+          break;
+        case "=":
+          setScreenText(stockCalculation[0]);
+          break;
+        default:
+          console.log("something went wrong in function stockIt");
+          break;
+      }
+    }
+
+    function calculate(firstNumber, specialKey, secondNumber){
+      if(specialKey === "+"){ return firstNumber + secondNumber }
+      if(specialKey === "-"){ return firstNumber - secondNumber }
+      if(specialKey === "/"){ return firstNumber / secondNumber }
+      if(specialKey === "x"){ return firstNumber * secondNumber }
     }
 
   return (
